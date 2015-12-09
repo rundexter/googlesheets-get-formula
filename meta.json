@@ -4,23 +4,23 @@
 {
     //Required. Inputs the module expects.
     "inputs": [
-        //e.g.
-        /*
         {
-            "id": "from",
-            "title":"From"
+            "id": "worksheet",
+            "title":"Sheet ID"
+        },
+        {
+            "id": "range",
+            "title":"Cell Position"
         }
-        */
     ],
     //Required. Outputs the module emits.
     "outputs": [
-      //e.g.
-      /*
         {
-            "id": "from",
-            "title":"From"
+            "id": "formula",
+            "title":"Formula"
         }
-      */
     ],
-    "title": "Google Sheets Get Formula" /* Required.A display name for the module */
+    "icon": "google",
+    "title": "Google Sheets Get Formula
+    " /* Required.A display name for the module */
 }
