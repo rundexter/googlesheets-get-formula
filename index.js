@@ -3,17 +3,13 @@ var _ = require('lodash'),
 
 module.exports = {
     checkAuthOptions: function (step, dexter) {
-        var range = step.input('range').first();
+        if(!step.input('range').first())
+            return 'A [range] inputs variable is required for this module';
 
-        if(!range) {
+        if(!dexter.environment('google_spreadsheet'))
+            return 'A [google_spreadsheet] environment variable is required for this module';
 
-            this.fail('A [range] inputs variable is required for this module');
-        }
-
-        if(!dexter.environment('google_access_token') || !dexter.environment('google_spreadsheet')) {
-
-            this.fail('A [google_access_token, google_spreadsheet] environment variable is required for this module');
-        }
+        return false;
     },
 
     convertColumnLetter: function(val) {
@@ -52,51 +48,41 @@ module.exports = {
      * @param {AppData} dexter Container for all data used in this workflow.
      */
     run: function(step, dexter) {
-
+        var credentials = dexter.provider('google').credentials(),
+            error = this.checkAuthOptions(step, dexter);
         var spreadsheetId = dexter.environment('google_spreadsheet'),
             worksheetId = step.input('worksheet', 1).first(),
-            range = step.input('range', 'A1').first();
+            range = step.input('range', 'A1').first(),
+            parseRange = this.parseRange(range);
 
-        this.checkAuthOptions(step, dexter);
+        if (error) return this.fail(error);
 
-        var parseRange = this.parseRange(range);
-
-        if (parseRange) {
-
+        if (parseRange)
             Spreadsheet.load({
                 //debug: true,
                 spreadsheetId: spreadsheetId,
                 worksheetId: worksheetId,
                 accessToken: {
                     type: 'Bearer',
-                    token: dexter.environment('google_access_token')
+                    token: _.get(credentials, 'access_token')
                 }
             }, function (err, spreadsheet) {
 
-                if (err) {
-
+                if (err)
                     this.fail(err);
-                } else {
-
-                    spreadsheet.receive({getValues: false}, function (err, rows) {
-
-                        if (err) {
-
-                            this.fail(err);
+                else
+                    spreadsheet.receive({getValues: false}, function (error, rows) {
+                        if (error) {
+                            this.fail(error);
                         } else {
                             var formula = _.get(rows, [parseRange.row, parseRange.column]);
                             formula = _.isString(formula) && formula.indexOf('=') === 0? formula : null;
 
                             this.complete({formula: formula});
-
                         }
                     }.bind(this));
-                }
             }.bind(this));
-        } else {
-
+        else
             this.fail('Range must be as "A2"');
-        }
-
     }
 };

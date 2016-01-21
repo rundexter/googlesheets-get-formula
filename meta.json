@@ -20,6 +20,12 @@
             "title":"Formula"
         }
     ],
+    "providers": [{
+        "name": "google",
+        "scopes": [
+            "https://spreadsheets.google.com/feeds/"
+        ]
+    }],
     "icon": "google",
     "title": "Google Sheets Get Formula" /* Required.A display name for the module */
 }
