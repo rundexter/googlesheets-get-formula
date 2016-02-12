@@ -1,13 +1,17 @@
 {
-  "name": "google-sheets-add-editor",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
-  "author": "Alexander",
-  "license": "ISC",
-  "private": true,
-  "dependencies": {
-    "edit-google-spreadsheet": "^0.2.21",
-    "lodash": "^3.10.1"
-  }
+   "name": "google-sheets-add-editor",
+   "version": "0.0.1",
+   "description": "Returns the formula for the top-left cell of the range, or an empty string if the cell is empty",
+   "main": "index.js",
+   "author": "Run Dexter, Inc",
+   "license": "MIT",
+   "private": true,
+   "dependencies": {
+      "edit-google-spreadsheet": "^0.2.21",
+      "lodash": "^3.10.1"
+   },
+   "repository": {
+      "type": "git",
+      "url": "https://github.com/rundexter/googlesheets-get-formula"
+   }
 }
